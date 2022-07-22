@@ -82,18 +82,15 @@ this { // Bind the optional `this` argument (any name wi
   await verifyAuthorization(caller.caller);
   let messages: List.List<Message> = List.take<Message>(queueData, count);
   queueData := List.drop<Message>(queueData, count);
-  queueData := List.append<Message>(List.reverse<Message>(messages), List.reverse<Message>(queueData));
   return messages;
  };
 
  public shared(caller) func printQueue(startIndex: Nat, count: Nat): async [Message] {
   await verifyAuthorization(caller.caller);
+  let partition: (List.List<Message>, List.List<Message>) = List.split<Message>(startIndex, queueData);
+  let queue: (List.List<Message>, List.List<Message>) = List.split<Message>(count, partition.1);
 
-  // let queueChunk: (List<Text>, List<Text>) = List.split<Text>(startIndex, queueData);
-  // let messageBlock: (List<Text>, List<Text>) = List.split<Text>(startIndex+count, List.last<Text>(queueChunk));
- 
-   // from which index & how many elements
-  return List.toArray<Message>(queueData);
+  return List.toArray<Message>(queue.0);
  };
 
  public query func getAuthorizedPrincipals() : async List.List<Principal> {
