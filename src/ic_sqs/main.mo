@@ -1,7 +1,6 @@
 import Error "mo:base/Error";
 import List "mo:base/List";
 import Array "mo:base/Array";
-import Result "mo:base/Result";
 import Debug "mo:base/Debug";
 import Text "mo:base/Text";
 import Principal "mo:base/Principal";
@@ -13,11 +12,6 @@ this { // Bind the optional `this` argument (any name wi
  type Message = {
    id: Text;
    message: Text;
- };
- public type ErrorCustom = {
-       #NotFound;
-       #Unauthorized;
-       #BadRequest;
  };
 
  var queueData: List.List<Message>  = List.nil();
@@ -57,13 +51,13 @@ this { // Bind the optional `this` argument (any name wi
   queueData := List.append<Message>(List.fromArray<Message>(messageList), queueData);
  };
 
- public shared(caller) func deleteMessage(messageId: Text) : async Result.Result<Bool, ErrorCustom> {
+ public shared(caller) func deleteMessage(messageId: Text) : async Bool {
   await verifyAuthorization(caller.caller);
   queueData := List.filter<Message>(queueData, func (messageObj: Message): Bool {
     if(messageObj.id == messageId) return false;
     return true;
   });
-  return #ok(true);
+  return true;
  };
 
  public shared(caller) func deleteMessagesInBulk(messageIds: [Text]) : async Bool {
@@ -88,18 +82,19 @@ this { // Bind the optional `this` argument (any name wi
   await verifyAuthorization(caller.caller);
   let messages: List.List<Message> = List.take<Message>(queueData, count);
   queueData := List.drop<Message>(queueData, count);
+  queueData := List.append<Message>(List.reverse<Message>(messages), List.reverse<Message>(queueData));
   return messages;
  };
 
-//  public shared query(caller) func printQueue(startIndex: Nat, count: Nat): async [Message] {
-//   await verifyAuthorization(caller.caller);
+ public shared(caller) func printQueue(startIndex: Nat, count: Nat): async [Message] {
+  await verifyAuthorization(caller.caller);
 
-//   // let queueChunk: (List<Text>, List<Text>) = List.split<Text>(startIndex, queueData);
-//   // let messageBlock: (List<Text>, List<Text>) = List.split<Text>(startIndex+count, List.last<Text>(queueChunk));
+  // let queueChunk: (List<Text>, List<Text>) = List.split<Text>(startIndex, queueData);
+  // let messageBlock: (List<Text>, List<Text>) = List.split<Text>(startIndex+count, List.last<Text>(queueChunk));
  
-//    // from which index & how many elements
-//   return List.toArray<Message>(queueData);
-//  };
+   // from which index & how many elements
+  return List.toArray<Message>(queueData);
+ };
 
  public query func getAuthorizedPrincipals() : async List.List<Principal> {
     return authorizedPrincipals;
