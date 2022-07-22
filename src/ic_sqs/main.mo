@@ -56,7 +56,7 @@ this { // Bind the optional `this` argument (any name wi
  };
 
 
- public shared(caller) func sendMessages(messages: [Text]) : async Result.Result<(), ErrorCustom> {
+ public shared(caller) func sendMessages(messages: [Text]) : async () {
   await verifyAuthorization(caller.caller);
   let generator = UUID.Generator();
   let messageList: [Message] = Array.map<Text, Message>(messages, func (messageText: Text): Message {
@@ -67,7 +67,6 @@ this { // Bind the optional `this` argument (any name wi
     };
   });
   queueData := List.append<Message>(List.fromArray<Message>(messageList), queueData);
-  return #ok();
  };
 
  public shared(caller) func deleteMessage(messageId: Text) : async Result.Result<Bool, ErrorCustom> {
@@ -79,7 +78,7 @@ this { // Bind the optional `this` argument (any name wi
   return #ok(true);
  };
 
- public shared(caller) func deleteMessagesInBulk(messageIds: [Text]) : async Result.Result<Bool, ErrorCustom> {
+ public shared(caller) func deleteMessagesInBulk(messageIds: [Text]) : async Bool {
   await verifyAuthorization(caller.caller);
   queueData := List.filter<Message>(queueData, func (messageObj: Message): Bool {
     let messageIdfound: ?Text = Array.find<Text>(messageIds, func (message_id: Text): Bool {
@@ -94,26 +93,26 @@ this { // Bind the optional `this` argument (any name wi
       };
     };
   });
-  return #ok(true);
+  return true;
  };
 
- public shared(caller) func receiveMessage(count: Nat): async Result.Result<List<Message>, ErrorCustom> {
+ public shared(caller) func receiveMessage(count: Nat): async List<Message> {
   await verifyAuthorization(caller.caller);
   var reversedList: List<Message> = List.reverse<Message>(queueData);
   let messages: List<Message> = List.take<Message>(reversedList, count);
   queueData := List.drop<Message>(reversedList, count);
   queueData := List.append<Message>(List.reverse<Message>(messages), List.reverse<Message>(queueData));
-  return #ok(messages);
+  return messages;
  };
 
- public shared query(caller) func printQueue(startIndex: Nat, count: Nat): async Result.Result<[Message], ErrorCustom> {
+ public shared query(caller) func printQueue(startIndex: Nat, count: Nat): async [Message] {
   await verifyAuthorization(caller.caller);
 
   // let queueChunk: (List<Text>, List<Text>) = List.split<Text>(startIndex, queueData);
   // let messageBlock: (List<Text>, List<Text>) = List.split<Text>(startIndex+count, List.last<Text>(queueChunk));
  
    // from which index & how many elements
-  return #ok(List.toArray<Message>(queueData));
+  return List.toArray<Message>(queueData);
  };
 
  public query func getAuthorizedPrincipals() : async [Principal] {
