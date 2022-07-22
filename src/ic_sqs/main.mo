@@ -22,17 +22,6 @@ this { // Bind the optional `this` argument (any name wi
 
  var queueData: List.List<Message>  = List.nil();
 
- public shared(msg) func testTry(): async Text {
-   let t = "abc";
-   try {
-     throw Error.reject("Unauthorized");
-     Debug.print("try");
-   } catch e {
-     Debug.print("catch");
-   };
-   return t;
- };
-
  // check authorization
  private func verifyAuthorization(caller: Principal): async () {
     let authorized = List.some<Principal>(authorizedPrincipals, func (id: Principal): Bool {
@@ -97,10 +86,8 @@ this { // Bind the optional `this` argument (any name wi
 
  public shared(caller) func receiveMessage(count: Nat): async List.List<Message> {
   await verifyAuthorization(caller.caller);
-  var reversedList: List.List<Message> = List.reverse<Message>(queueData);
-  let messages: List.List<Message> = List.take<Message>(reversedList, count);
-  queueData := List.drop<Message>(reversedList, count);
-  queueData := List.append<Message>(List.reverse<Message>(messages), List.reverse<Message>(queueData));
+  let messages: List.List<Message> = List.take<Message>(queueData, count);
+  queueData := List.drop<Message>(queueData, count);
   return messages;
  };
 
