@@ -14,14 +14,13 @@ this { // Bind the optional `this` argument (any name wi
    id: Text;
    message: Text;
  };
- type List<Message> = ?(Message, List<Message>);
  public type ErrorCustom = {
        #NotFound;
        #Unauthorized;
        #BadRequest;
  };
 
- var queueData: List<Message>  = List.nil();
+ var queueData: List.List<Message>  = List.nil();
 
  public shared(msg) func testTry(): async Text {
    let t = "abc";
@@ -96,26 +95,26 @@ this { // Bind the optional `this` argument (any name wi
   return true;
  };
 
- public shared(caller) func receiveMessage(count: Nat): async List<Message> {
+ public shared(caller) func receiveMessage(count: Nat): async List.List<Message> {
   await verifyAuthorization(caller.caller);
-  var reversedList: List<Message> = List.reverse<Message>(queueData);
-  let messages: List<Message> = List.take<Message>(reversedList, count);
+  var reversedList: List.List<Message> = List.reverse<Message>(queueData);
+  let messages: List.List<Message> = List.take<Message>(reversedList, count);
   queueData := List.drop<Message>(reversedList, count);
   queueData := List.append<Message>(List.reverse<Message>(messages), List.reverse<Message>(queueData));
   return messages;
  };
 
- public shared query(caller) func printQueue(startIndex: Nat, count: Nat): async [Message] {
-  await verifyAuthorization(caller.caller);
+//  public shared query(caller) func printQueue(startIndex: Nat, count: Nat): async [Message] {
+//   await verifyAuthorization(caller.caller);
 
-  // let queueChunk: (List<Text>, List<Text>) = List.split<Text>(startIndex, queueData);
-  // let messageBlock: (List<Text>, List<Text>) = List.split<Text>(startIndex+count, List.last<Text>(queueChunk));
+//   // let queueChunk: (List<Text>, List<Text>) = List.split<Text>(startIndex, queueData);
+//   // let messageBlock: (List<Text>, List<Text>) = List.split<Text>(startIndex+count, List.last<Text>(queueChunk));
  
-   // from which index & how many elements
-  return List.toArray<Message>(queueData);
- };
+//    // from which index & how many elements
+//   return List.toArray<Message>(queueData);
+//  };
 
- public query func getAuthorizedPrincipals() : async [Principal] {
+ public query func getAuthorizedPrincipals() : async List.List<Principal> {
     return authorizedPrincipals;
   };
 };
