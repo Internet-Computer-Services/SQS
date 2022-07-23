@@ -1,7 +1,11 @@
 {
   "canisters": {
-    "ic_sqs_queue": {
-      "main": "src/ic_sqs/main.mo",
+    "icsqs": {
+      "main": "src/icsqs/main.mo",
+      "type": "motoko"
+    },
+    "icsqs_manager": {
+      "main": "src/icsqs_manager/main.mo",
       "type": "motoko"
     }
   },
@@ -11,7 +15,7 @@
       "packtool": "vessel sources"
     }
   },
-  "dfx": "0.10.0",
+  "dfx": "0.11.0",
   "networks": {
     "local": {
       "bind": "127.0.0.1:8001",
