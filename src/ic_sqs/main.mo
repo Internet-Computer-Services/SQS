@@ -26,29 +26,32 @@ this { // Bind the optional `this` argument (any name wi
     };
   };
 
+  private func createMessage(message: Text): async Message {
+    let generator = UUID.Generator();
+    let messageId: Text = UUID.toText(generator.new());
+    let messageObj = {
+      id = messageId;
+      message = message;
+    };
+    return messageObj;
+  };
+
  public shared(caller) func sendMessage(message: Text) : async () {
   await verifyAuthorization(caller.caller);
-  let generator = UUID.Generator();
-  let messageId: Text = UUID.toText(generator.new());
-  let messageObj = {
-    id = messageId;
-    message = message;
-  };
+  let messageObj: Message = await createMessage(message);
+
   queueData := List.push<Message>(messageObj, queueData);
  };
 
 
  public shared(caller) func sendMessages(messages: [Text]) : async () {
   await verifyAuthorization(caller.caller);
-  let generator = UUID.Generator();
-  let messageList: [Message] = Array.map<Text, Message>(messages, func (messageText: Text): Message {
-    let messageId: Text = UUID.toText(generator.new());
-    let messageObj = {
-      id = messageId;
-      message = messageText;
-    };
-  });
-  queueData := List.append<Message>(List.fromArray<Message>(messageList), queueData);
+  var messageList = List.nil<Message>();
+  for (messageText in Array.vals(messages)) {
+    let messageObj: Message = await createMessage(messageText);
+    messageList := List.push<Message>(messageObj, messageList);
+  };
+  queueData := List.append<Message>(messageList, queueData);
  };
 
  public shared(caller) func deleteMessage(messageId: Text) : async Bool {
