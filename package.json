@@ -1,0 +1,27 @@
+{
+  "name": "ic_sqs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Internet-Computer-Services/SQS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Internet-Computer-Services/SQS/issues"
+  },
+  "homepage": "https://github.com/Internet-Computer-Services/SQS#readme",
+  "dependencies": {
+    "chai": "^4.3.6",
+    "mocha": "^9.2.2",
+    "uuid": "^8.3.2"
+  }
+}

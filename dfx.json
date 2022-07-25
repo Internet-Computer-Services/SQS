@@ -1,0 +1,26 @@
+{
+  "canisters": {
+    "icsqs": {
+      "main": "src/icsqs/main.mo",
+      "type": "motoko"
+    },
+    "icsqs_manager": {
+      "main": "src/icsqs_manager/main.mo",
+      "type": "motoko"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": "vessel sources"
+    }
+  },
+  "dfx": "0.11.0",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8001",
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}
