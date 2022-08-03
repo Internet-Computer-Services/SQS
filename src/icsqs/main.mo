@@ -13,7 +13,7 @@ this { // Bind the optional `this` argument (any name wi
  type Message = {
    id: Text;
    message: Text;
-   last_processed: Int;
+   lastRead: Int;
  };
 
  // list of message objects
@@ -38,7 +38,7 @@ this { // Bind the optional `this` argument (any name wi
     let messageObj = {
       id = messageId;
       message = message;
-      last_processed = -1;
+      lastRead = -1;
     };
     return messageObj;
   };
@@ -108,12 +108,12 @@ this { // Bind the optional `this` argument (any name wi
   let current_time: Int = Time.now();
 
   queueData := List.map<Message, Message>(queueData, func(message: Message): Message {
-    let last_processed_time: Int = (current_time - message.last_processed) / 1_000_000_000;
-    if(message_count > 0 and (message.last_processed == -1 or last_processed_time > visiblit_timeout)) {
+    let last_processed_time: Int = (current_time - message.lastRead) / 1_000_000_000;
+    if(message_count > 0 and (message.lastRead == -1 or last_processed_time > visiblit_timeout)) {
       let messageObj: Message = {
         id = message.id;
         message = message.message;
-        last_processed = current_time;
+        lastRead = current_time;
       };
       messages := List.push<Message>(messageObj, messages);
       message_count-=1;
