@@ -71,7 +71,4 @@ $ dfx canister call <canister_id> sendMessage '("<message>")'
 
 $ dfx canister call <canister_id> printQueue '(<start_index>, <end_index>)'
 
-or
-
-$ for i in `seq 1 10`; do echo “dfx canister call rrkah-fqaaa-aaaaa-aaaaq-cai sendMessage ‘(\“DUMMY MESSAGE $i\“)‘“; done | bash -
 ```
