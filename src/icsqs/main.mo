@@ -17,8 +17,8 @@ this { // Bind the optional `this` argument (any name wi
  };
 
  // list of message objects
- var queueData: List.List<Message>  = List.nil();
- var visiblit_timeout: Nat = 30; // in seconds
+ stable var queueData: List.List<Message>  = List.nil();
+ stable var visiblit_timeout: Nat = 30; // in seconds
 
  // check authorization
  private func verifyAuthorization(caller: Principal): async () {
@@ -54,7 +54,7 @@ this { // Bind the optional `this` argument (any name wi
 
 
  // enqueue multiple messages in the queue
- public shared(caller) func sendMessages(messages: [Text]) : async () {
+ public shared(caller) func sendMessagesInBatch(messages: [Text]) : async () {
   await verifyAuthorization(caller.caller);
   var messageList = List.nil<Message>();
   // add new message to queue
@@ -91,8 +91,8 @@ this { // Bind the optional `this` argument (any name wi
   return true;
  };
 
- // delete a messages from queue in bulk
- public shared(caller) func deleteMessagesInBulk(messageIds: [Text]) : async Bool {
+ // delete a messages from queue in batch
+ public shared(caller) func deleteMessagesInBatch(messageIds: [Text]) : async Bool {
   await verifyAuthorization(caller.caller);
   // filter messages
   await deleteMessageUtil(messageIds);
@@ -108,8 +108,8 @@ this { // Bind the optional `this` argument (any name wi
   let current_time: Int = Time.now();
 
   queueData := List.map<Message, Message>(queueData, func(message: Message): Message {
-    let last_processed_time: Int = (current_time - message.lastRead) / 1_000_000_000;
-    if(message_count > 0 and (message.lastRead == -1 or last_processed_time > visiblit_timeout)) {
+    let lastReadTime: Int = (current_time - message.lastRead) / 1_000_000_000;
+    if(message_count > 0 and (message.lastRead == -1 or lastReadTime > visiblit_timeout)) {
       let messageObj: Message = {
         id = message.id;
         message = message.message;
