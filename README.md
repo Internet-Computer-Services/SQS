@@ -61,7 +61,9 @@ Simple queueing service built for Internet Computer
 #### <b>DFX Commands for local testing</b>
 
 ```
-$ dfx deploy --mode=reinstall --argument '(opt record {principal "woicf-w4c3l-ggagd-ktql2-zzwf6-xwrx7-ehupq-an62o-uvf5d-owgvw-nae"; null})' icsqs  
+export PRINCIPAL=$(dfx identity get-principal)
+export ARGUMENT='(opt record {principal "'$PRINCIPAL'"; null})'
+dfx deploy --mode=reinstall --argument $ARGUMENT icsqs 
 ```
 
 #### <b>To call methods:</b> dfx canister call <canister_id> <method_name> '(<arguments>)'
