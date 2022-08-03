@@ -5,6 +5,7 @@ import Debug "mo:base/Debug";
 import Text "mo:base/Text";
 import Principal "mo:base/Principal";
 import UUID "mo:uuid/UUID";
+import Time "mo:base/Time";
 
 shared (install) actor class ICSQS(authorizedPrincipals: List.List<Principal>) =
 this { // Bind the optional `this` argument (any name wi
@@ -12,10 +13,12 @@ this { // Bind the optional `this` argument (any name wi
  type Message = {
    id: Text;
    message: Text;
+   last_processed: Int;
  };
 
  // list of message objects
  var queueData: List.List<Message>  = List.nil();
+ var visiblit_timeout: Nat = 30; // in seconds
 
  // check authorization
  private func verifyAuthorization(caller: Principal): async () {
@@ -35,6 +38,7 @@ this { // Bind the optional `this` argument (any name wi
     let messageObj = {
       id = messageId;
       message = message;
+      last_processed = -1;
     };
     return messageObj;
   };
@@ -61,20 +65,8 @@ this { // Bind the optional `this` argument (any name wi
   queueData := List.append<Message>(messageList, queueData);
  };
 
- // delete a message from the queue permanently
- public shared(caller) func deleteMessage(messageId: Text) : async Bool {
-  await verifyAuthorization(caller.caller);
-  queueData := List.filter<Message>(queueData, func (messageObj: Message): Bool {
-    if(messageObj.id == messageId) return false;
-    return true;
-  });
-  return true;
- };
-
- // delete a messages from queue in bulk
- public shared(caller) func deleteMessagesInBulk(messageIds: [Text]) : async Bool {
-  await verifyAuthorization(caller.caller);
-  // filter messages
+ // utility method to delete messages from queue
+ public shared(caller) func deleteMessageUtil(messageIds: [Text]) : async () {
   queueData := List.filter<Message>(queueData, func (messageObj: Message): Bool {
     let messageIdfound: ?Text = Array.find<Text>(messageIds, func (message_id: Text): Bool {
       return message_id == messageObj.id;
@@ -90,17 +82,58 @@ this { // Bind the optional `this` argument (any name wi
       };
     };
   });
+ };
+
+ // delete a message from the queue permanently
+ public shared(caller) func deleteMessage(messageId: Text) : async Bool {
+  await verifyAuthorization(caller.caller);
+  await deleteMessageUtil([messageId]);
+  return true;
+ };
+
+ // delete a messages from queue in bulk
+ public shared(caller) func deleteMessagesInBulk(messageIds: [Text]) : async Bool {
+  await verifyAuthorization(caller.caller);
+  // filter messages
+  await deleteMessageUtil(messageIds);
   return true;
  };
 
  // return message object to caller (dequeue operation)
- public shared(caller) func receiveMessage(count: Nat): async List.List<Message> {
+ public shared(caller) func receiveMessage(count: Nat): async [Message] {
   await verifyAuthorization(caller.caller);
   // take first `count` number of messages
-  let messages: List.List<Message> = List.take<Message>(queueData, count);
-  // remove first `count` number of messages from the list
-  queueData := List.drop<Message>(queueData, count);
-  return messages;
+  var message_count: Int = count;
+  var messages: List.List<Message> = List.nil();
+  let current_time: Int = Time.now();
+
+  queueData := List.map<Message, Message>(queueData, func(message: Message): Message {
+    let last_processed_time: Int = (current_time - message.last_processed) / 1_000_000_000;
+    if(message_count > 0 and (message.last_processed == -1 or last_processed_time > visiblit_timeout)) {
+      let messageObj: Message = {
+        id = message.id;
+        message = message.message;
+        last_processed = current_time;
+      };
+      messages := List.push<Message>(messageObj, messages);
+      message_count-=1;
+      return messageObj;
+    };
+    return message;
+  });
+  return List.toArray<Message>(messages);
+ };
+
+ // update visibility timeout
+ public shared(caller) func setVisibilityTimeout(timeout: Nat): async Bool {
+   await verifyAuthorization(caller.caller);
+   visiblit_timeout := timeout;
+   return true;
+ };
+
+ // get current visibility timeout
+ public shared query(caller) func visibilityTimeout(): async Nat {
+   visiblit_timeout;
  };
 
  // print queue data
