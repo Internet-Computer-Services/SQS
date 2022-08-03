@@ -56,5 +56,18 @@ Simple queueing service built for Internet Computer
 - Send & read messages simultaneously
 - Once processed only
 
+---------
 
+#### <b>DFX Commands for local testing</b>
 
+```
+$ dfx deploy --mode=reinstall --argument '(opt record {principal "<principal-id>"; null})' icsqs  
+```
+
+#### <b>To call methods:</b> dfx canister call <canister_id> <method_name> '(<arguments>)'
+examples:
+```
+$ dfx canister call <canister_id> sendMessage '("<message>")'
+
+$ dfx canister call <canister_id> printQueue '(<start_index>, <end_index>)'
+```
