@@ -10,6 +10,8 @@ import Time "mo:base/Time";
 shared (install) actor class ICSQS(authorizedPrincipals: List.List<Principal>) =
 this { // Bind the optional `this` argument (any name wi
 
+ var authorizedPrincipalIds: List.List<Principal> = authorizedPrincipals;
+
  type Message = {
    id: Text;
    message: Text;
@@ -22,7 +24,7 @@ this { // Bind the optional `this` argument (any name wi
 
  // check authorization
  private func verifyAuthorization(caller: Principal): async () {
-    let authorized = List.some<Principal>(authorizedPrincipals, func (id: Principal): Bool {
+    let authorized = List.some<Principal>(authorizedPrincipalIds, func (id: Principal): Bool {
       return id == caller;
     });
     if(authorized==false){
@@ -145,8 +147,15 @@ this { // Bind the optional `this` argument (any name wi
   return List.toArray<Message>(queue.0);
  };
 
+ // add authorized principal
+ public shared(caller) func addAuthorizedPrincipal(identity: Principal): async Bool {
+   await verifyAuthorization(caller.caller);
+   authorizedPrincipalIds := List.push<Principal>(identity, authorizedPrincipalIds);
+   return true;
+ };
+
  // helper method to get authorized principals' list
  public query func getAuthorizedPrincipals() : async List.List<Principal> {
-    return authorizedPrincipals;
+    return authorizedPrincipalIds;
   };
 };
