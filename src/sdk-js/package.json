@@ -1,0 +1,32 @@
+{
+  "name": "@icqueue/sdk-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {},
+  "author": "",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com:Internet-Computer-Services/SQS.git"
+  },
+  "dependencies": {
+    "@dfinity/agent": "^0.10.4",
+    "@dfinity/candid": "^0.10.4",
+    "@dfinity/identity": "^0.10.2",
+    "@dfinity/principal": "^0.10.4",
+    "node-fetch": "^3.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "queue",
+    "icqueue",
+    "dfinity",
+    "motoko",
+    "icqueue-sdk",
+    "sdk-js"
+  ]
+}
