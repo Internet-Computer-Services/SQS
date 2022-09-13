@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
+    <link
+      rel="shortcut icon"
+      href="assets/images/icons/favicon.png"
+      type="image/x-icon"
+    />
+    <!--if lt IE 9
+    script(src='http://html5shim.googlecode.com/svn/trunk/html5.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js')
+    -->
+
+    <!-- link style -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="assets/fonts/fonts.css" />
+
+    <title>IC SQS</title>
+  </head>
+  <body>
+    <!-- header-area  -->
+    <header class="header-area">
+      <div class="container">
+        <div class="row">
+          <div class="column-half">
+            <div class="logo">
+              <!-- <a href="#"
+                ><img src="assets/images/ic-vault.png" alt="IC SQS"
+              /></a> -->
+              <h4 class="title">IC SQS</h4>
+            </div>
+          </div>
+          <div class="column-half mobile-menu">
+            <div id="mobile-menu-icon" class="">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="menu" id="menu">
+              <ul>
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="#">About us</a></li>
+                <li><a href="#">How to use SQS ?</a></li>
+                <li><a href="#">SQS</a></li>
+                <li>
+                  <a
+                    href="http://console.internetcomputerservices.com/"
+                    class="launch-app"
+                    >Go To ICS</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <!-- menu end -->
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- header-area end -->
+
+    <!-- hero-area  -->
+    <section class="hero-area">
+      <div class="container">
+        <div class="row hero-block">
+          <div class="hero-content">
+            <h1>
+              Fully Managed
+              <span
+                class="writer"
+                data-type='["distributed", "Simple", "Decentralized"]'
+              ></span>
+            </h1>
+            <h1>Queue Service for your DApps</h1>
+            <p>
+              ICSQS is a native, scalable decentralized simple message queuing
+              service powered by the internet computer.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- hero-area end -->
+
+    <!-- use-cases-area  -->
+    <section class="use-cases">
+      <div class="container">
+        <div class="row">
+          <div class="column-full">
+            <h2>IC SQS Offers</h2>
+          </div>
+        </div>
+        <!-- row end -->
+        <div class="row">
+          <div class="column-third">
+            <div class="cases-item">
+              <div class="icon">
+                <img src="assets/images/icons/icon-01.png" alt="Icon" />
+              </div>
+              <h3>Reliable message queue</h3>
+              <p>
+                Create a reliable message queue that can be used to DApps to IOT
+                devices as queue service.
+              </p>
+            </div>
+          </div>
+          <!-- column-end -->
+          <div class="column-third">
+            <div class="cases-item">
+              <div class="icon">
+                <img src="assets/images/icons/icon-02.png" alt="Icon" />
+              </div>
+              <h3>Batch Operations</h3>
+              <p>
+                IC SQS offers batch operations, so you can push or delete
+                multiple messages to a queue at once.
+              </p>
+            </div>
+          </div>
+          <!-- column-end -->
+          <div class="column-third">
+            <div class="cases-item">
+              <div class="icon">
+                <img src="assets/images/icons/icon-03.png" alt="Icon" />
+              </div>
+              <h3>Visibility</h3>
+              <p>
+                Message visibility timeout is the amount of time that a message
+                is invisible in the queue after a reader picks up the message.
+                IC SQS makes it easy to customize the visibility timeout for
+                your queue.
+              </p>
+            </div>
+          </div>
+          <!-- column-end -->
+          <div class="column-third">
+            <div class="cases-item">
+              <div class="icon">
+                <img src="assets/images/icons/icon-04.png" alt="Icon" />
+              </div>
+              <h3>Security</h3>
+              <p>
+                Only authorized identities are allowed to access the queue.
+                These identities can be updated according to the requirement.
+              </p>
+            </div>
+          </div>
+          <!-- column-end -->
+          <div class="column-third">
+            <div class="cases-item">
+              <div class="icon">
+                <img src="assets/images/icons/icon-05.png" alt="Icon" />
+              </div>
+              <h3>Fully open source DApp</h3>
+              <p>
+                you can use the source code to build & deploy your own SQS
+                service. For build & deploy, easy instructions are available on
+                our github page.
+              </p>
+            </div>
+          </div>
+          <!-- column-end -->
+          <div class="column-third">
+            <div class="cases-item mb-0">
+              <div class="icon">
+                <img src="assets/images/icons/icon-06.png" alt="Icon" />
+              </div>
+              <h3>Internet Computer</h3>
+              <p>
+                IC SQS is build on top of the internet computer, a
+                decentralized, open-source, and secure network. This
+                decentralized nature of the internet computer make IC SQS secure
+                & transparent.
+              </p>
+            </div>
+          </div>
+          <!-- column-end -->
+        </div>
+      </div>
+    </section>
+    <!-- use-cases-area end -->
+    <section class="feature-area feature-one">
+      <div class="container" id="spinner-container" style="display: none">
+        <div class="loader">Loading...</div>
+      </div>
+      <!-- <div
+        class="container connect-container"
+        id="connect-container"
+        style="display: none"
+      >
+        <div class="row">
+          <div class="column-full" style="color: dodgerblue">
+            <h2>SQS Live</h2>
+          </div>
+        </div>
+        <button class="connect-btn" id="connect-btn">Connect with plug</button>
+      </div> -->
+      <div class="container connected-container" id="connected-container">
+        <div class="row" style="margin-bottom: 1rem">
+          <div class="column-full" style="color: dodgerblue">
+            <h2>SQS Live</h2>
+          </div>
+        </div>
+        <form>
+          <div class="row" style="justify-content: center; margin-bottom: 1rem">
+            <label for="qid" class="label">Enter queue canister id:</label>
+            <input
+              type="text"
+              placeholder="aa-aaaa"
+              id="qid"
+              name="qid"
+              class="input"
+            />
+          </div>
+          <div class="row" style="justify-content: center; margin-bottom: 1rem">
+            <label for="qnum" class="label">Count:</label>
+            <input
+              type="number"
+              placeholder="1"
+              id="qnum"
+              name="qnum"
+              class="input"
+            />
+          </div>
+          <div
+            class="row"
+            style="justify-content: center; margin-bottom: 0.8rem"
+          >
+            <button class="query-btn" id="query-queue">Query</button>
+          </div>
+        </form>
+      </div>
+    </section>
+    <!-- price-area end -->
+
+    <!-- footer-area  -->
+    <footer class="footer-area">
+      <div class="container">
+        <div class="row">
+          <div class="column-full">
+            <div class="footer-top">
+              <div class="f-logo">
+                <h4 class="title">IC SQS</h4>
+              </div>
+              <div class="f-menu">
+                <ul>
+                  <li><a href="#">ICS</a></li>
+                  <li><a href="#">Github</a></li>
+                  <li><a href="#">Privacy Policy</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- row end -->
+
+        <div class="row">
+          <div class="column-half">
+            <div class="copyright">
+              <p>© 2022 IC SQS. All rights reserved</p>
+            </div>
+          </div>
+          <div class="column-half">
+            <div class="powred-by">
+              <img src="assets/images/powred-by.png" alt="Interner Computer" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- footer-area end -->
+
+    <!-- start script -->
+    <script src="assets/js/jquery-3.5.1.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="./script.js"></script>
+  </body>
+</html>

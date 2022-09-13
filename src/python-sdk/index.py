@@ -18,7 +18,8 @@ class ICSQS:
         return self.identity.sender()
     
     def addAuthorizedPrincipal(self, principal):
-        return self.agent.update_raw(self.canisterId, "addAuthorizedPrincipal", IDL, principal)
+        params = [{'type': Types.Principal, 'value': principal}]
+        return self.agent.update_raw(self.canisterId, "addAuthorizedPrincipal", encode(params), IDL["addAuthorizedPrincipal"])
     
     def printQueue(self, startFrom, count):
         params = [{'type': Types.Nat, 'value': startFrom}, {'type': Types.Nat, 'value': count}]
