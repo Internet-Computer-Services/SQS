@@ -6,13 +6,13 @@ from ic.agent import Agent
 from sqsIDL import IDL
 
 class ICSQS:
-    def __init__(self, pem, host="https://ic0.app"):
+    def __init__(self, pem, canisterId, host="https://ic0.app"):
         self.pem=pem
         self.host=host
         self.identity=Identity.from_pem(pem)
         self.client=Client(host)
         self.agent=Agent(self.identity, self.client)
-        self.canisterId="ryjl3-tyaaa-aaaaa-aaaba-cai"
+        self.canisterId=canisterId
 
     def getIdentity(self):
         return self.identity.sender()

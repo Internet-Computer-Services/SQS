@@ -21,8 +21,10 @@ pemString = """
 -----END PRIVATE KEY-----
 """
 
+canisterId="ryjl3-tyaaa-aaaaa-aaaba-cai"
+
 #create instance of ic sqs
-instance = ICSQS(pemString, host)
+instance = ICSQS(pemString, canisterId, host)
 # host here is optional, Default host is "https://ic0.app"
 print(instance.printQueue(0, 3))
 ```
