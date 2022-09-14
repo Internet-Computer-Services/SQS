@@ -366,6 +366,23 @@ section.feature-area .row {
   width: 24px;
 }
 /* 
+================ queue ==============
+*/
+.queue-item {
+  background-color: #f8f8f8;
+  padding: 12px;
+  margin: 4px;
+  transition: all ease-in-out .2s;
+}
+
+.queue-item:hover {
+  transform: scale(1.02);
+  background-color: #dadada;
+  border-radius: 8px;
+  border-bottom: 1px solid #522785;
+}
+
+/* 
 ======================  feature-area end ======================= >
 */
 

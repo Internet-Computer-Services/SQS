@@ -23,7 +23,6 @@ class Queue {
     const identity = Secp256k1KeyIdentity.Secp256k1KeyIdentity.fromSecretKey(
       Buffer.from(privateKey, "base64")
     );
-    console.log("id: ", identity.getPrincipal().toText());
     const agent = new HttpAgent({
       host: this.host,
       identity: identity,

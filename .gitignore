@@ -3,6 +3,5 @@
 .vessel
 .vscode
 node_modules
-/src/test
 /*/*/*pycache*
 /*/*/yarn.lock

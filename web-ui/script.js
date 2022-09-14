@@ -5,6 +5,7 @@ let qid = document.getElementById("qid");
 let qnum = document.getElementById("qnum");
 let queryBtn = document.getElementById("query-queue");
 let spinnerContainer = document.getElementById("spinner-container");
+let queryData = document.getElementById("query-data");
 let plugConnected = false;
 
 var TxtType = function (el, toRotate, period) {
@@ -118,8 +119,15 @@ const queryQueue = async (event) => {
   event.preventDefault();
   event.stopPropagation();
   const actor = await getActor("ryjl3-tyaaa-aaaaa-aaaba-cai");
-  console.log("print");
   const queue = await actor.printQueue(0, 10);
+  const queueDataBlob = queue.map((q) => {
+    return `<div class="queue-item">
+      <div class="queue-item__id">${q.id}</div>
+      <div class="queue-item__num">${q.message}</div>
+    </div>`;
+  });
+  queryData.innerHTML = `<div>${queueDataBlob.join("")}</div>`;
+  queryData.style.display = "block";
   console.log(queue);
 };
 
