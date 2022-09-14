@@ -74,3 +74,9 @@ $ dfx canister call <canister_id> sendMessage '("<message>")'
 $ dfx canister call <canister_id> printQueue '(<start_index>, <end_index>)'
 
 ```
+
+### IC-SQS Javascript SDK:
+Javascript SDK to access IC SQS programmatically. [click here](./js-sdk/README.md) for documentation
+
+### IC-SQS Python SDK:
+Python SDK to access IC SQS programmatically. [click here](./python-sdk/README.md) for documentation
