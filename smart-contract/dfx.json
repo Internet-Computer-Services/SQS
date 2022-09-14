@@ -3,10 +3,6 @@
     "icsqs": {
       "main": "src/icsqs/main.mo",
       "type": "motoko"
-    },
-    "icsqs_manager": {
-      "main": "src/icsqs_manager/main.mo",
-      "type": "motoko"
     }
   },
   "defaults": {
