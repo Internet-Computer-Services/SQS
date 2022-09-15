@@ -47,7 +47,7 @@
                 <li><a href="#" class="active">Home</a></li>
                 <li><a href="#">About us</a></li>
                 <li><a href="#">How to use SQS ?</a></li>
-                <li><a href="#">SQS</a></li>
+                <li><a href="#SQS-Live">SQS Live</a></li>
                 <li>
                   <a
                     href="http://console.internetcomputerservices.com/"
@@ -100,7 +100,7 @@
           <div class="column-third">
             <div class="cases-item">
               <div class="icon">
-                <img src="assets/images/icons/icon-01.png" alt="Icon" />
+                <img src="assets/images/icons/queue-icon.png" alt="Icon" />
               </div>
               <h3>Reliable message queue</h3>
               <p>
@@ -113,7 +113,7 @@
           <div class="column-third">
             <div class="cases-item">
               <div class="icon">
-                <img src="assets/images/icons/icon-02.png" alt="Icon" />
+                <img src="assets/images/icons/batch-icon.png" alt="Icon" />
               </div>
               <h3>Batch Operations</h3>
               <p>
@@ -126,7 +126,7 @@
           <div class="column-third">
             <div class="cases-item">
               <div class="icon">
-                <img src="assets/images/icons/icon-03.png" alt="Icon" />
+                <img src="assets/images/icons/visibility-icon.png" alt="Icon" />
               </div>
               <h3>Visibility</h3>
               <p>
@@ -141,7 +141,7 @@
           <div class="column-third">
             <div class="cases-item">
               <div class="icon">
-                <img src="assets/images/icons/icon-04.png" alt="Icon" />
+                <img src="assets/images/icons/security-icon.png" alt="Icon" />
               </div>
               <h3>Security</h3>
               <p>
@@ -154,7 +154,10 @@
           <div class="column-third">
             <div class="cases-item">
               <div class="icon">
-                <img src="assets/images/icons/icon-05.png" alt="Icon" />
+                <img
+                  src="assets/images/icons/open-source-icon.png"
+                  alt="Icon"
+                />
               </div>
               <h3>Fully open source DApp</h3>
               <p>
@@ -168,14 +171,16 @@
           <div class="column-third">
             <div class="cases-item mb-0">
               <div class="icon">
-                <img src="assets/images/icons/icon-06.png" alt="Icon" />
+                <img
+                  src="assets/images/icons/ic-icon.svg"
+                  alt="Icon"
+                  style="max-width: 60px; margin-top: 8px"
+                />
               </div>
               <h3>Internet Computer</h3>
               <p>
                 IC SQS is build on top of the internet computer, a
-                decentralized, open-source, and secure network. This
-                decentralized nature of the internet computer make IC SQS secure
-                & transparent.
+                decentralized, open-source, and secure network.
               </p>
             </div>
           </div>
@@ -194,38 +199,145 @@
             class="column-full"
             style="margin-bottom: 2rem; color: dodgerblue"
           >
-            <h2>SQS Live</h2>
+            <h2 id="SQS-Live">SQS Live</h2>
           </div>
         </div>
-        <form>
-          <div class="row" style="justify-content: center; margin-bottom: 1rem">
-            <label for="qid" class="label">Enter queue canister id:</label>
-            <input
-              type="text"
-              placeholder="aa-aaaa"
-              id="qid"
-              name="qid"
-              class="input"
-            />
-          </div>
-          <div class="row" style="justify-content: center; margin-bottom: 1rem">
-            <label for="qnum" class="label">Count:</label>
-            <input
-              type="number"
-              placeholder="1"
-              id="qnum"
-              name="qnum"
-              class="input"
-            />
+        <div class="row" style="justify-content: center">
+          <div class="col-half">
+            <ul class="row tab" id="live-tabs" onclick="liveTabSelect">
+              <div class="tab-item" data-index="1">Add Message</div>
+              <div class="tab-item active-tab" data-index="2">View Message</div>
+              <div class="tab-item" data-index="3">Delete Message</div>
+            </ul>
+            <div id="live-op-message" class="live-op-message hidethis"></div>
+
+            <!-- tab 1 -->
+            <form
+              id="add-queue"
+              class="col hidethis tab-content"
+              data-index="1"
+            >
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 1rem"
+              >
+                <label for="qid" class="label">Enter queue canister id:</label>
+                <input
+                  type="text"
+                  placeholder="aa-aaaa"
+                  id="qid"
+                  name="qid"
+                  class="input"
+                />
+              </div>
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 1rem"
+              >
+                <label for="qnum" class="label">Message:</label>
+                <textarea
+                  type="text"
+                  placeholder="Hello world"
+                  id="qmsg"
+                  name="qmsg"
+                  class="input"
+                  rows="4"
+                  cols="50"
+                ></textarea>
+              </div>
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 0.8rem"
+              >
+                <button id="add-call-btn" class="query-btn">Add Message</button>
+              </div>
+            </form>
+
+            <!-- tab 2 -->
+            <form id="query-queue" class="col tab-content" data-index="2">
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 1rem"
+              >
+                <label for="qid" class="label">Enter queue canister id:</label>
+                <input
+                  type="text"
+                  placeholder="aa-aaaa"
+                  id="qid"
+                  name="qid"
+                  class="input"
+                />
+              </div>
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 1rem"
+              >
+                <label for="qnum" class="label">Count:</label>
+                <input
+                  type="number"
+                  placeholder="1"
+                  id="qnum"
+                  name="qnum"
+                  class="input"
+                />
+              </div>
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 0.8rem"
+              >
+                <button id="query-call-btn" class="query-btn">Query</button>
+              </div>
+            </form>
+
+            <!-- tab 3 -->
+            <form
+              class="col hidethis tab-content"
+              data-index="3"
+              id="delete-queue"
+            >
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 1rem"
+              >
+                <label for="qid" class="label">Enter queue canister id:</label>
+                <input
+                  type="text"
+                  placeholder="aa-aaaa"
+                  id="qid"
+                  name="qid"
+                  class="input"
+                />
+              </div>
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 1rem"
+              >
+                <label for="qid" class="label">Message id:</label>
+                <input
+                  type="text"
+                  placeholder="aa-aaaa"
+                  id="qmsgid"
+                  name="qmsgid"
+                  class="input"
+                />
+              </div>
+
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 0.8rem"
+              >
+                <button
+                  class="query-btn"
+                  id="delete-call-btn"
+                  style="background-color: red; color: white"
+                >
+                  Delete
+                </button>
+              </div>
+            </form>
           </div>
           <div
-            class="row"
-            style="justify-content: center; margin-bottom: 0.8rem"
-          >
-            <button class="query-btn" id="query-queue">Query</button>
-          </div>
-          <div
-            class="row"
+            class="col-half"
             style="
               justify-content: center;
               margin-top: 1rem;
@@ -238,7 +350,7 @@
             "
             id="query-data"
           ></div>
-        </form>
+        </div>
       </div>
     </section>
     <!-- price-area end -->
@@ -254,8 +366,20 @@
               </div>
               <div class="f-menu">
                 <ul>
-                  <li><a href="#">ICS</a></li>
-                  <li><a href="#">Github</a></li>
+                  <li>
+                    <a
+                      href="https://internetcomputerservices.com/"
+                      target="_blank"
+                      >ICS</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://github.com/Internet-Computer-Services/SQS"
+                      target="_blank"
+                      >Github</a
+                    >
+                  </li>
                   <li><a href="#">Privacy Policy</a></li>
                 </ul>
               </div>
