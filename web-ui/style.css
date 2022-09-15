@@ -4,6 +4,7 @@
 html,
 body {
   height: 100%;
+  scroll-behavior: smooth;
 }
 body {
   color: #18191f;
@@ -46,6 +47,7 @@ a {
 .row {
   display: flex;
   flex-wrap: wrap;
+  transition: all ease-in-out .4s;
 }
 .column-full {
   flex: 0 0 100%;
@@ -368,11 +370,48 @@ section.feature-area .row {
 /* 
 ================ queue ==============
 */
+.tab {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  cursor: pointer;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.tab-item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 20px;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+  transition: all ease-in-out 0.1s;
+  font-size: 14px;
+}
+
+.active-tab {
+  background-color: rgb(241 245 249);
+  color: dodgerblue;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.col-half {
+  width: 50%;
+  overflow-x: hidden;
+  transition: 0.5s ease-in-out all;
+}
+
+#qid, #qmsg, #qnum, #qmsgid {
+  padding: 8px;
+}
+
 .queue-item {
   background-color: #f8f8f8;
   padding: 12px;
   margin: 4px;
-  transition: all ease-in-out .2s;
+  transition: all ease-in-out 0.2s;
 }
 
 .queue-item:hover {
@@ -380,6 +419,18 @@ section.feature-area .row {
   background-color: #dadada;
   border-radius: 8px;
   border-bottom: 1px solid #522785;
+}
+
+.queue-item__id {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6b82ab;
+}
+
+.queue-item__num {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #444;
 }
 
 /* 
@@ -613,6 +664,14 @@ footer.footer-area .row:last-child {
 ====================== Live SQS Area ==================
 */
 
+.live-op-message {
+  margin: 0 0 1rem 0;
+  padding: 0.8rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .connected-container .connect-container {
   width: 100%;
   display: "flex";
@@ -624,6 +683,8 @@ footer.footer-area .row:last-child {
   width: 14rem;
   font-size: 1.1rem;
   color: #666;
+  display: flex;
+  align-items: flex-start;
 }
 
 .input {
@@ -639,7 +700,7 @@ footer.footer-area .row:last-child {
 }
 
 .query-btn {
- width: 8rem;
+  width: 8rem;
   background-color: dodgerblue;
   border-radius: 6px;
   margin-top: 1rem;
@@ -661,6 +722,12 @@ footer.footer-area .row:last-child {
   .column-third {
     flex: 0 0 100%;
     max-width: 1000%;
+  }
+
+  .col-half {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   /* mobile-menu */
@@ -949,6 +1016,10 @@ footer.footer-area .row:last-child {
     width: 40%;
     top: 75px;
     right: -30px;
+  }
+
+  .hero-block {
+    height: 18vh !important;
   }
 }
 

@@ -1,11 +1,16 @@
 let connectBtn = document.getElementById("connect-btn");
-// let connectContainer = document.getElementById("connect-container");
 let connectedContainer = document.getElementById("connected-container");
 let qid = document.getElementById("qid");
 let qnum = document.getElementById("qnum");
 let queryBtn = document.getElementById("query-queue");
+let addBtn = document.getElementById("add-queue");
+let deleteBtn = document.getElementById("delete-queue");
 let spinnerContainer = document.getElementById("spinner-container");
 let queryData = document.getElementById("query-data");
+let addCallBtn = document.getElementById("add-call-btn");
+let queryCallBtn = document.getElementById("query-call-btn");
+let deleteCallBtn = document.getElementById("delete-call-btn");
+const liveOpMessage = document.getElementById("live-op-message");
 let plugConnected = false;
 
 var TxtType = function (el, toRotate, period) {
@@ -51,6 +56,34 @@ TxtType.prototype.tick = function () {
   }, delta);
 };
 
+const setActiveTab = (index) => {
+  if (!index) return;
+  let tabs = document.getElementsByClassName("tab-item");
+  let tabsContent = document.getElementsByClassName("tab-content");
+  Object.keys(tabs).forEach((key) => {
+    const tab = tabs[key];
+    tab.classList.remove("active-tab");
+    const tabId = tab.getAttribute("data-index");
+    if (tabId === index) {
+      tab.classList.add("active-tab");
+    }
+  });
+  Object.keys(tabsContent).forEach((key) => {
+    const tab = tabsContent[key];
+    tab.classList.add("hidethis");
+    const tabId = tab.getAttribute("data-index");
+    if (tabId === index) {
+      tab.classList.remove("hidethis");
+    }
+  });
+};
+
+const liveTabSelect = async (event) => {
+  const selectedElem = event.target || event.srcElement;
+  const index = selectedElem.getAttribute("data-index");
+  setActiveTab(index);
+};
+
 const getActor = async (canisterId) => {
   try {
     const hasAllowed = await window.ic.plug.requestConnect({
@@ -61,20 +94,17 @@ const getActor = async (canisterId) => {
       whitelist: [canisterId],
       host: "http://127.0.0.1:8002",
     });
-    console.log("age: ", agent);
     const rootKeyFetchRes = await window.ic?.plug?.agent?.fetchRootKey();
     if (agent) {
       const actor = await window.ic.plug.createActor({
         canisterId,
         interfaceFactory: idlFactory,
       });
-      console.log("actor", actor);
       await window.ic?.plug?.agent?.fetchRootKey();
       return actor;
     }
     return null;
   } catch (error) {
-    console.log("ER err: ", error);
     return null;
   }
 };
@@ -82,7 +112,6 @@ const getActor = async (canisterId) => {
 const connectWithPlug = async () => {
   try {
     toggleLiveSpinner(true);
-    // const hasAllowed = await window.ic.plug.requestConnect();
 
     if (hasAllowed) {
       plugConnected = true;
@@ -101,13 +130,18 @@ const connectWithPlug = async () => {
   }
 };
 
+const spinnerBtn = (btn) => {
+  btn.innerText = "Loading...";
+  btn.disabled = true;
+};
+
+const disabledSpinner = (btn, text) => {
+  btn.innerText = text;
+  btn.disabled = false;
+};
+
 const toggleLiveSpinner = (spin) => {
   spinnerContainer.style.display = spin ? "block" : "none";
-  //   connectContainer.style.display = spin
-  //     ? "none"
-  //     : plugConnected
-  //     ? "none"
-  //     : "block";
   connectedContainer.style.display = spin
     ? "none"
     : plugConnected
@@ -118,8 +152,14 @@ const toggleLiveSpinner = (spin) => {
 const queryQueue = async (event) => {
   event.preventDefault();
   event.stopPropagation();
-  const actor = await getActor("ryjl3-tyaaa-aaaaa-aaaba-cai");
-  const queue = await actor.printQueue(0, 10);
+  const queueId = event.target[0].value;
+  const count = parseInt(event.target[1].value || "");
+  if (!queueId || !count) return;
+  spinnerBtn(queryCallBtn);
+
+  const actor = await getActor(queueId);
+  const queue = await actor.printQueue(0, count);
+
   const queueDataBlob = queue.map((q) => {
     return `<div class="queue-item">
       <div class="queue-item__id">${q.id}</div>
@@ -128,20 +168,48 @@ const queryQueue = async (event) => {
   });
   queryData.innerHTML = `<div>${queueDataBlob.join("")}</div>`;
   queryData.style.display = "block";
-  console.log(queue);
+  disabledSpinner(queryCallBtn, "Query");
+};
+
+const addQueue = async (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  const queueId = event.target[0].value;
+  const message = event.target[1].value;
+  if (!queueId || !message) return;
+  spinnerBtn(addCallBtn);
+
+  const actor = await getActor(queueId);
+  await actor.sendMessage(message);
+  disabledSpinner(addCallBtn, "Add Message");
+  alert("Added");
+};
+
+const deleteQueue = async (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  const queueId = event.target[0].value;
+  const messageId = event.target[1].value;
+  if (!queueId || !messageId) return;
+  spinnerBtn(deleteCallBtn);
+
+  const actor = await getActor(queueId);
+  await actor.deleteMessage(messageId);
+  disabledSpinner(deleteCallBtn, "Delete");
+  alert("Deleted!");
 };
 
 window.onload = async function () {
   let elements = document.getElementsByClassName("writer");
   let connectBtn = document.getElementById("connect-btn");
+  const liveTabs = document.getElementById("live-tabs");
+
+  liveTabs.addEventListener("click", liveTabSelect);
 
   // add events
-  queryBtn.addEventListener("click", queryQueue);
-  //   connectBtn.addEventListener("click", connectWithPlug);
-
-  //   toggleLiveSpinner(true);
-  //   plugConnected = await window.ic.plug.isConnected();
-  //   toggleLiveSpinner(false);
+  queryBtn.addEventListener("submit", queryQueue);
+  addBtn.addEventListener("submit", addQueue);
+  deleteBtn.addEventListener("submit", deleteQueue);
 
   for (var i = 0; i < elements.length; i++) {
     var toRotate = elements[i].getAttribute("data-type");
