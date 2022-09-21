@@ -13,6 +13,7 @@ let deleteCallBtn = document.getElementById("delete-call-btn");
 const liveOpMessage = document.getElementById("live-op-message");
 let plugConnected = false;
 
+const IC_HOST = "https://ic0.app";
 var TxtType = function (el, toRotate, period) {
   this.toRotate = toRotate;
   this.el = el;
@@ -88,11 +89,11 @@ const getActor = async (canisterId) => {
   try {
     const hasAllowed = await window.ic.plug.requestConnect({
       whitelist: [canisterId],
-      host: "http://127.0.0.1:8002",
+      host: IC_HOST,
     });
     const agent = await window.ic?.plug?.createAgent({
       whitelist: [canisterId],
-      host: "http://127.0.0.1:8002",
+      host: IC_HOST,
     });
     const rootKeyFetchRes = await window.ic?.plug?.agent?.fetchRootKey();
     if (agent) {
