@@ -32,6 +32,9 @@ class Queue {
       canisterId: this.canisterId,
       agent,
     });
+
+    console.log("Calling from Principal: ", identity.getPrincipal().toText());
+
     this.identity = identity;
     this.agent = agent;
     this.actor = actor;
