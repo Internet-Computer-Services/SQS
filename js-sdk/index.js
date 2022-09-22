@@ -33,7 +33,6 @@ class Queue {
       agent,
     });
     this.identity = identity;
-    console.log("=> ", identity, `${identity.getPrincipal()}`);
     this.agent = agent;
     this.actor = actor;
   }
