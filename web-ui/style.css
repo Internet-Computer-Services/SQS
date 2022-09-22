@@ -47,7 +47,7 @@ a {
 .row {
   display: flex;
   flex-wrap: wrap;
-  transition: all ease-in-out .4s;
+  transition: all ease-in-out 0.4s;
 }
 .column-full {
   flex: 0 0 100%;
@@ -403,7 +403,10 @@ section.feature-area .row {
   transition: 0.5s ease-in-out all;
 }
 
-#qid, #qmsg, #qnum, #qmsgid {
+#qid,
+#qmsg,
+#qnum,
+#qmsgid {
   padding: 8px;
 }
 
@@ -697,6 +700,7 @@ footer.footer-area .row:last-child {
 
 .hidethis {
   display: none;
+  visibility: hidden;
 }
 
 .query-btn {
@@ -1038,7 +1042,7 @@ footer.footer-area .row:last-child {
   border-radius: 50%;
 }
 .loader {
-  color: #0dc5c1;
+  color: #258FFB;
   font-size: 5px;
   text-indent: -99999em;
   margin: 55px auto;
@@ -1061,23 +1065,24 @@ footer.footer-area .row:last-child {
   background: #fff;
   border-radius: 10.2em 0 0 10.2em;
   top: -0.1em;
+  opacity: 0.9;
   left: -0.1em;
   -webkit-transform-origin: 5.1em 5.1em;
   transform-origin: 5.1em 5.1em;
-  -webkit-animation: load2 1s infinite ease-in-out;
-  animation: load2 1s infinite ease-in-out;
+  -webkit-animation: load2 0.5s infinite linear;
+  animation: load2 0.5s infinite linear;
 }
 .loader:after {
   width: 5.2em;
   height: 10.2em;
-  background: #fff;
+  background: transparent;
   border-radius: 0 10.2em 10.2em 0;
   top: -0.1em;
   left: 4.9em;
   -webkit-transform-origin: 0.1em 5.1em;
   transform-origin: 0.1em 5.1em;
-  -webkit-animation: load2 1s infinite ease;
-  animation: load2 1s infinite ease;
+  -webkit-animation: load2 0.5s infinite linear;
+  animation: load2 0.5s infinite linear;
 }
 @-webkit-keyframes load2 {
   0% {
@@ -1098,4 +1103,28 @@ footer.footer-area .row:last-child {
     -webkit-transform: rotate(360deg);
     transform: rotate(360deg);
   }
+}
+
+.live-tabs-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  display: inline-block;
+}
+
+.live-tabs-sub-container {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  background-color: white;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 9999;
+  display: inline-block;
 }
