@@ -212,7 +212,6 @@ const addQueue = async (event) => {
   const actor = await getActor(queueId);
   await actor.sendMessage(message);
   await queryQueue(100);
-  await queryQueue(100);
   disabledSpinner(addCallBtn, "Add Message");
   event.target[0].value = "";
 };
@@ -227,7 +226,6 @@ const deleteQueue = async (event) => {
 
   const actor = await getActor(queueId);
   await actor.deleteMessage(messageId);
-  await queryQueue(100);
   await queryQueue(100);
   disabledSpinner(deleteCallBtn, "Delete");
   event.target[0].value = "";
