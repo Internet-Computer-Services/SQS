@@ -5,8 +5,8 @@ sys.path.insert(1, '../python-sdk')
 from index import ICSQS
 
 pemString = os.environ['IC_PEM']
-canisterId = "ryjl3-tyaaa-aaaaa-aaaba-cai"
-host = "http://localhost:8002" # or "https://ic0.app"
+canisterId = "b5nbv-6aaaa-aaaap-aak4a-cai"
+host = "https://ic0.app" # or "https://ic0.app"
 # host is optional here, if not provided, the default is "https://ic0.app"
 
 # Create a new instance of the SDK
