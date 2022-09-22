@@ -12,6 +12,7 @@ let queryCallBtn = document.getElementById("query-call-btn");
 let deleteCallBtn = document.getElementById("delete-call-btn");
 let addPrincipalForm = document.getElementById("add-principal");
 let addPrincipalBtn = document.getElementById("add-principal-call-btn");
+let liveTabsContainer = document.getElementById("live-tabs-container");
 const liveOpMessage = document.getElementById("live-op-message");
 let plugConnected = false;
 
@@ -89,10 +90,15 @@ const liveTabSelect = async (event) => {
 
 const getActor = async (canisterId) => {
   try {
-    const hasAllowed = await window.ic.plug.requestConnect({
-      whitelist: [canisterId],
-      host: IC_HOST,
-    });
+    const isConnected = await window.ic.plug.isConnected();
+    if (!isConnected) {
+      const hasAllowed = await window.ic.plug.requestConnect({
+        whitelist: [canisterId],
+        host: IC_HOST,
+      });
+      if (!hasAllowed)
+        return alert("Please allow the connection to use the Plug wallet");
+    }
     const agent = await window.ic?.plug?.createAgent({
       whitelist: [canisterId],
       host: IC_HOST,
@@ -130,6 +136,23 @@ const connectWithPlug = async () => {
     } else {
       alert("Something went wrong. Please try again later.");
     }
+  }
+};
+
+const validateAndQueryQueue = async (event) => {
+  try {
+    liveTabsContainer.classList.remove("hidethis");
+    let qidVal = qid.value;
+    qidVal = qidVal?.trim();
+    if (!qidVal) {
+      liveTabsContainer.classList.add("hidethis");
+      alert("Please enter valid values");
+      return;
+    }
+    await queryQueue(100);
+    liveTabsContainer.classList.add("hidethis");
+  } catch (error) {
+    liveTabsContainer.classList.add("hidethis");
   }
 };
 

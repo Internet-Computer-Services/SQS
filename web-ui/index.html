@@ -217,11 +217,16 @@
               id="qid"
               name="qid"
               class="input"
+              onblur="validateAndQueryQueue()"
             />
           </div>
         </div>
-        <div class="row" style="justify-content: center">
-          <div class="col-half">
+        <div style="display: flex; justify-content: center; position: relative;">
+          <div class="live-tabs-container hidethis" id="live-tabs-container">
+            <div class="loader" style="z-index: 999999999">Loading...</div>
+            <div class="live-tabs-sub-container"></div>
+          </div>
+          <div class="col-half" style="padding-right: 1rem;">
             <ul class="row tab" id="live-tabs" onclick="liveTabSelect">
               <div class="tab-item active-tab" data-index="1">Add Message</div>
               <div class="tab-item" data-index="3">Delete Message</div>
