@@ -10,6 +10,8 @@ let queryData = document.getElementById("query-data");
 let addCallBtn = document.getElementById("add-call-btn");
 let queryCallBtn = document.getElementById("query-call-btn");
 let deleteCallBtn = document.getElementById("delete-call-btn");
+let addPrincipalForm = document.getElementById("add-principal");
+let addPrincipalBtn = document.getElementById("add-principal-call-btn");
 const liveOpMessage = document.getElementById("live-op-message");
 let plugConnected = false;
 
@@ -150,13 +152,18 @@ const toggleLiveSpinner = (spin) => {
     : "none";
 };
 
-const queryQueue = async (event) => {
-  event.preventDefault();
-  event.stopPropagation();
-  const queueId = event.target[0].value;
-  const count = parseInt(event.target[1].value || "");
+const getQueueIdValue = () => {
+  const qid = document.getElementById("qid").value;
+  if (!qid) {
+    alert("Please enter a queue id");
+    return;
+  }
+  return qid;
+};
+
+const queryQueue = async (count) => {
+  const queueId = getQueueIdValue();
   if (!queueId || !count) return;
-  spinnerBtn(queryCallBtn);
 
   const actor = await getActor(queueId);
   const queue = await actor.printQueue(0, count);
@@ -169,46 +176,62 @@ const queryQueue = async (event) => {
   });
   queryData.innerHTML = `<div>${queueDataBlob.join("")}</div>`;
   queryData.style.display = "block";
-  disabledSpinner(queryCallBtn, "Query");
 };
 
 const addQueue = async (event) => {
   event.preventDefault();
   event.stopPropagation();
-  const queueId = event.target[0].value;
-  const message = event.target[1].value;
+  const queueId = getQueueIdValue();
+  const message = event.target[0].value;
   if (!queueId || !message) return;
   spinnerBtn(addCallBtn);
 
   const actor = await getActor(queueId);
   await actor.sendMessage(message);
+  await queryQueue(100);
   disabledSpinner(addCallBtn, "Add Message");
-  alert("Added");
+  event.target[0].value = "";
 };
 
 const deleteQueue = async (event) => {
   event.preventDefault();
   event.stopPropagation();
-  const queueId = event.target[0].value;
-  const messageId = event.target[1].value;
+  const queueId = getQueueIdValue();
+  const messageId = event.target[0].value;
   if (!queueId || !messageId) return;
   spinnerBtn(deleteCallBtn);
 
   const actor = await getActor(queueId);
   await actor.deleteMessage(messageId);
+  await queryQueue(100);
   disabledSpinner(deleteCallBtn, "Delete");
-  alert("Deleted!");
+  event.target[0].value = "";
+};
+
+const addPrincipalCall = async (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  const queueId = getQueueIdValue();
+  const principalId = event.target[0].value;
+  if (!queueId || !principalId) return;
+  spinnerBtn(addPrincipalBtn);
+
+  const actor = await getActor(queueId);
+  const x = Principal.fromText(principalId);
+  await actor.addAuthorizedPrincipal(x);
+  disabledSpinner(addPrincipalBtn, "Add Principal");
+  alert("Added");
+  event.target[0].value = "";
 };
 
 window.onload = async function () {
   let elements = document.getElementsByClassName("writer");
-  let connectBtn = document.getElementById("connect-btn");
   const liveTabs = document.getElementById("live-tabs");
 
   liveTabs.addEventListener("click", liveTabSelect);
 
   // add events
-  queryBtn.addEventListener("submit", queryQueue);
+  addPrincipalForm.addEventListener("submit", addPrincipalCall);
   addBtn.addEventListener("submit", addQueue);
   deleteBtn.addEventListener("submit", deleteQueue);
 
