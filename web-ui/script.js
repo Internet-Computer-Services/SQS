@@ -10,10 +10,17 @@ let queryData = document.getElementById("query-data");
 let addCallBtn = document.getElementById("add-call-btn");
 let queryCallBtn = document.getElementById("query-call-btn");
 let deleteCallBtn = document.getElementById("delete-call-btn");
+let deletePrincipalCallBtn = document.getElementById(
+  "delete-principal-call-btn"
+);
 let addPrincipalForm = document.getElementById("add-principal");
+let deletePrincipalForm = document.getElementById("delete-auth-principal");
 let addPrincipalBtn = document.getElementById("add-principal-call-btn");
 let liveTabsContainer = document.getElementById("live-tabs-container");
+let authPrincipalsList = document.getElementById("auth-principals-list");
+let tabFiveLoader = document.getElementById("tab-5-loader");
 const liveOpMessage = document.getElementById("live-op-message");
+
 let plugConnected = false;
 
 const IC_HOST = "https://ic0.app";
@@ -82,10 +89,44 @@ const setActiveTab = (index) => {
   });
 };
 
+const fetchAuthorizedPrincipals = async () => {
+  try {
+    tabFiveLoader.classList.remove("hidethis");
+    const queueId = getQueueIdValue();
+    if (!queueId) return;
+
+    const actor = await getActor(queueId);
+    let principals = await actor.getAuthorizedPrincipals();
+    const principalIds = [];
+    while (principals && principals[0]?.length) {
+      principalIds.push(`${principals[0][0]}`);
+      principals = principals[0][1];
+    }
+
+    const dataBlob = principalIds.map((principal) => {
+      return `<div class="queue-item">
+      <div class="queue-item__id">${principal}</div>
+    </div>`;
+    });
+    tabFiveLoader.classList.add("hidethis");
+    authPrincipalsList.innerHTML = `<div>${dataBlob.join("")}</div>`;
+  } catch (error) {
+    tabFiveLoader.classList.add("hidethis");
+  }
+};
+
 const liveTabSelect = async (event) => {
+  if (!qid.value?.trim()) {
+    alert("Please enter a valid queue id");
+    return;
+  }
   const selectedElem = event.target || event.srcElement;
   const index = selectedElem.getAttribute("data-index");
   setActiveTab(index);
+  if (index === "5") {
+    // show loader in the tab 5
+    fetchAuthorizedPrincipals();
+  }
 };
 
 const getActor = async (canisterId) => {
@@ -146,7 +187,7 @@ const validateAndQueryQueue = async (event) => {
     qidVal = qidVal?.trim();
     if (!qidVal) {
       liveTabsContainer.classList.add("hidethis");
-      alert("Please enter valid values");
+      alert("Please enter valid queue id");
       return;
     }
     await queryQueue(100);
@@ -247,6 +288,22 @@ const addPrincipalCall = async (event) => {
   event.target[0].value = "";
 };
 
+const deletePrincipalCall = async (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+  const queueId = getQueueIdValue();
+  const principalId = event.target[0].value;
+  if (!queueId || !principalId) return;
+  spinnerBtn(deletePrincipalCallBtn);
+
+  const actor = await getActor(queueId);
+  const x = Principal.fromText(principalId);
+  await actor.removeAuthorizedPrincipal(x);
+  disabledSpinner(deletePrincipalCallBtn, "Delete");
+  alert("Deleted");
+  event.target[0].value = "";
+};
+
 window.onload = async function () {
   let elements = document.getElementsByClassName("writer");
   const liveTabs = document.getElementById("live-tabs");
@@ -255,6 +312,7 @@ window.onload = async function () {
 
   // add events
   addPrincipalForm.addEventListener("submit", addPrincipalCall);
+  deletePrincipalForm.addEventListener("submit", deletePrincipalCall);
   addBtn.addEventListener("submit", addQueue);
   deleteBtn.addEventListener("submit", deleteQueue);
 
@@ -289,6 +347,7 @@ const idlFactory = ({ IDL }) => {
     getAuthorizedPrincipals: IDL.Func([], [List], ["query"]),
     printQueue: IDL.Func([IDL.Nat, IDL.Nat], [IDL.Vec(Message)], []),
     receiveMessage: IDL.Func([IDL.Nat], [IDL.Vec(Message)], []),
+    removeAuthorizedPrincipal: IDL.Func([IDL.Principal], [IDL.Bool], []),
     sendMessage: IDL.Func([IDL.Text], [], []),
     sendMessagesInBatch: IDL.Func([IDL.Vec(IDL.Text)], [], []),
     setVisibilityTimeout: IDL.Func([IDL.Nat], [IDL.Bool], []),

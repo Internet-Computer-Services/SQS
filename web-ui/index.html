@@ -207,35 +207,44 @@
               justify-content: center;
               margin-bottom: 1rem;
               width: 100%;
+              align-self: center;
               margin: 1rem 0 2rem 0;
             "
           >
-            <label for="qid" class="label">Enter queue canister id:</label>
-            <input
-              type="text"
-              placeholder="aa-aaaa"
-              id="qid"
-              name="qid"
-              class="input"
-              onblur="validateAndQueryQueue()"
-            />
+            <div class="d-flex flex-column justify-content-center w-50">
+              <label for="qid" class="label" style="padding-bottom: 0.6rem"
+                >Enter queue canister id:</label
+              >
+              <input
+                type="text"
+                placeholder="aa-aaaa"
+                id="qid"
+                name="qid"
+                class="input w-100"
+                onblur="validateAndQueryQueue()"
+              />
+            </div>
           </div>
         </div>
-        <div style="display: flex; justify-content: center; position: relative;">
+        <div style="display: flex; justify-content: center; position: relative">
           <div class="live-tabs-container hidethis" id="live-tabs-container">
             <div class="loader" style="z-index: 999999999">Loading...</div>
             <div class="live-tabs-sub-container"></div>
           </div>
-          <div class="col-half" style="padding-right: 1rem;">
+          <div class="col-half px-4">
             <ul class="row tab" id="live-tabs" onclick="liveTabSelect">
               <div class="tab-item active-tab" data-index="1">Add Message</div>
               <div class="tab-item" data-index="3">Delete Message</div>
               <div class="tab-item" data-index="4">Add Principal</div>
+              <div class="tab-item" data-index="5">
+                Authenticated Principals
+              </div>
+              <div class="tab-item" data-index="6">Delete Principal</div>
             </ul>
             <div id="live-op-message" class="live-op-message hidethis"></div>
 
             <!-- tab 1 -->
-            <form id="add-queue" class="col tab-content" data-index="1">
+            <form id="add-queue" class="col tab-content px-4" data-index="1">
               <div
                 class="row"
                 style="justify-content: center; margin-bottom: 1rem"
@@ -255,13 +264,15 @@
                 class="row"
                 style="justify-content: center; margin-bottom: 0.8rem"
               >
-                <button id="add-call-btn" class="query-btn">Add Message</button>
+                <button id="add-call-btn" class="query-btn w-25">
+                  Add Message
+                </button>
               </div>
             </form>
 
             <!-- tab 3 -->
             <form
-              class="col hidethis tab-content"
+              class="col hidethis tab-content px-4"
               data-index="3"
               id="delete-queue"
             >
@@ -279,13 +290,12 @@
                 />
               </div>
 
-
               <div
                 class="row"
                 style="justify-content: center; margin-bottom: 0.8rem"
               >
                 <button
-                  class="query-btn"
+                  class="query-btn w-25"
                   id="delete-call-btn"
                   style="background-color: red; color: white"
                 >
@@ -297,7 +307,7 @@
             <!-- tab 4 -->
             <form
               id="add-principal"
-              class="col tab-content hidethis"
+              class="col tab-content hidethis px-4"
               data-index="4"
             >
               <div
@@ -319,11 +329,72 @@
                 style="justify-content: center; margin-bottom: 0.8rem"
               >
                 <button
-                  class="query-btn"
+                  class="query-btn w-25"
                   id="add-principal-call-btn"
                   class="add-principal-btn"
                 >
                   Add Principal
+                </button>
+              </div>
+            </form>
+
+            <!-- tab 5 -->
+            <div
+              id="auth-principals"
+              class="col tab-content hidethis px-4"
+              data-index="5"
+            >
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 1rem"
+                id="auth-principals-list"
+              >
+                <div
+                  id="tab-5-loader"
+                  style="
+                    margin-top: 4rem;
+                    align-self: center;
+                    display: flex;
+                    justify-content: center;
+                  "
+                  class="hidethis"
+                >
+                  Loading...
+                </div>
+              </div>
+            </div>
+
+            <!-- tab 6 -->
+            <form
+              class="col hidethis tab-content px-4"
+              data-index="6"
+              id="delete-auth-principal"
+            >
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 1rem"
+              >
+                <label for="principal-id-to-be-deleted" class="label"
+                  >Principal:</label
+                >
+                <input
+                  type="text"
+                  placeholder="aa-aaaa"
+                  id="principal-id-to-be-deleted"
+                  name="principal-id-to-be-deleted"
+                  class="input"
+                />
+              </div>
+              <div
+                class="row"
+                style="justify-content: center; margin-bottom: 0.8rem"
+              >
+                <button
+                  class="query-btn w-25"
+                  id="delete-principal-call-btn"
+                  style="background-color: red; color: white"
+                >
+                  Delete
                 </button>
               </div>
             </form>
@@ -333,7 +404,7 @@
             style="
               justify-content: center;
               margin-top: 1rem;
-              height: 20rem;
+              height: 28rem;
               overflow-y: auto;
               padding: 2rem;
               border-radius: 8px;
@@ -397,6 +468,13 @@
     <!-- footer-area end -->
 
     <!-- start script -->
+    <!-- CSS only -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT"
+      crossorigin="anonymous"
+    />
     <script src="assets/js/jquery-3.5.1.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="./utils/principal.js"></script>
