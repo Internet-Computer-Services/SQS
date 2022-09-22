@@ -154,6 +154,15 @@ this { // Bind the optional `this` argument (any name wi
    return true;
  };
 
+ // remove authorized principal
+ public shared(caller) func removeAuthorizedPrincipal(identity: Principal): async Bool {
+   await verifyAuthorization(caller.caller);
+   authorizedPrincipalIds := List.filter<Principal>(authorizedPrincipalIds, func (principalId: Principal): Bool {
+     return principalId != identity;
+   });
+   return true;
+ };
+
  // helper method to get authorized principals' list
  public query func getAuthorizedPrincipals() : async List.List<Principal> {
     return authorizedPrincipalIds;
