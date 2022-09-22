@@ -1,10 +1,20 @@
 import { Queue } from "../js-sdk/index.js";
 
 const identity = process.env.IC_PEM;
-const canister_id = "ryjl3-tyaaa-aaaaa-aaaba-cai"; // this should be the canister id of your queue canister
-const host = "http://localhost:8002"; // host is optional here, default is  "https://ic0.app"
+const canister_id = "b5nbv-6aaaa-aaaap-aak4a-cai"; // this should be the canister id of your queue canister
+const host = "https://ic0.app"; // host is optional here, default is  "https://ic0.app"
+
+const init = () => {
+  if (!identity) {
+    console.log(
+      "Please set the IC_PEM environment variable to your private key"
+    );
+    return;
+  }
+};
 
 const main = async () => {
+  init();
   const queue = new Queue(host, canister_id);
   // initialize the identity
   await queue.initIdentity(identity);
