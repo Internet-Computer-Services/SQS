@@ -58,6 +58,12 @@ Simple queueing service built for Internet Computer
 
 ---------
 
+#### <b>100% On Chain Web UI</b>
+```
+[https://dlq6f-siaaa-aaaam-aarma-cai.raw.ic0.app/](https://dlq6f-siaaa-aaaam-aarma-cai.ic0.app/)
+```
+
+
 #### <b>DFX Commands for local testing</b>
 
 ```
